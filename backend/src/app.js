@@ -13,9 +13,9 @@ const ownerRoutes = require('./routes/owner')
 
 const app = express()
 
-// ✅ Configure CORS for your Vercel frontend
+// ✅ Allow your Vercel frontend (adjust domain)
 app.use(cors({
-  origin: "https://store-rating-app-m7nr.vercel.app", // change to your Vercel domain
+  origin: "https://store-rating-app-m7nr.vercel.app", // change to your Vercel app domain
   credentials: true
 }))
 app.use(express.json())
@@ -23,11 +23,11 @@ app.use(express.json())
 // ✅ Health check
 app.get('/', (req, res) => res.json({ message: 'Store Ratings API' }))
 
-// ✅ Mount routes
-app.use('/api/auth', authRoutes)
-app.use('/api/admin', adminRoutes)
-app.use('/api/stores', storesRoutes)
-app.use('/api/owner', ownerRoutes)
+// ✅ Mount routes WITHOUT `/api` prefix (to match your frontend)
+app.use('/auth', authRoutes)
+app.use('/admin', adminRoutes)
+app.use('/stores', storesRoutes)
+app.use('/owner', ownerRoutes)
 
 // ✅ Error handler
 app.use((err, req, res, next) => {
@@ -37,6 +37,7 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000
 
+// ✅ Create default admin if missing
 async function seedAdmin() {
   const admin = await User.findOne({ where: { role: "admin" } })
   if (!admin) {
@@ -51,6 +52,7 @@ async function seedAdmin() {
   }
 }
 
+// ✅ Start server
 async function start() {
   try {
     await sequelize.authenticate()
@@ -67,6 +69,7 @@ async function start() {
 }
 
 start()
+
 
 
 
