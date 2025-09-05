@@ -15,7 +15,7 @@ const app = express()
 
 // ✅ Configure CORS for your Vercel frontend
 app.use(cors({
-  origin: "https://your-frontend.vercel.app", // change to your Vercel domain
+  origin: "https://store-rating-app-m7nr.vercel.app", // change to your Vercel domain
   credentials: true
 }))
 app.use(express.json())
